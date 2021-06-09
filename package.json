@@ -1,0 +1,22 @@
+{
+  "name": "itsi-gitsi",
+  "version": "1.0.0",
+  "description": "Herramientas desarrolladas para la gestión automática de GITHUB",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/app.js"
+  },
+  "keywords": [
+    "GIT",
+    "Tools",
+    "Automatization",
+    "Github"
+  ],
+  "author": "Manel Mena",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "github-api": "^3.4.0"
+  }
+}
