@@ -7,6 +7,7 @@ ITSI-GITSI es una herramienta para la generación y gestión automática de repo
 3. Modificar automáticamente un Markdown en el repo para de manera automática plasmar las notas en el mismo.
 
 ## Posible Metamodelo de plantilla de repo
+Para modifical el metamodelo utilizar la extensión `drawio` en visual studio code.
 ![model](resources/model.svg)
 
 # Consideraciónes de uso de la herramienta.
@@ -24,4 +25,23 @@ npm install .
 ```
 
 ## Ejecutar la herramienta
-// TODO
+...
+
+### TODO
+- [-] Analisis y documentación
+  - [x] Generación de README.md para documentar el proceso
+  - [x] Creación de un metamodelo básico para la definición de repos.
+  - [ ] Mejorar el metamodelo para acompasar todos los campos necesarios en el mismo.
+  - [ ] Escribir guia para la utilización de la herramienta.
+- [-] Desarrollo
+  - [x] Crear repositioro de manera automática con GitHub API v3.
+  - [ ] Creación bulk de repositorios a partir de una lista de nombres (.xls, .csv,.tsv?)
+  - [ ] Crear etiquetas asociadas a un proyecto de GitHub.
+  - [ ] Crear milestones asociados a un proyecto de GitHub.
+  - [ ] Crear issues de manera automática en un proyecto de GitHub.
+  - [ ] Asociar etiquetas a issues.
+  - [ ] Asociar milestones a issues.
+  - [ ] Recuento de issues completados por usuario en un repositorio.
+  - [ ] Recuento de puntuación de issues completados por usuario en un repositorio si fuese necesario.
+  - [ ] Recuento de issues por usuario de un proyecto en un milestone.
+  - [ ] Modificación de archivo dentro de mismo repo para el establecimiento automático de puntuaciones para un usuario.
