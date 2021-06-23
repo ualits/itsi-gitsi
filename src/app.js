@@ -9,7 +9,7 @@ var gh = new GitHub({
 var org = gh.getOrganization(process.env.ORG_NAME);
 
 var repoDef = {
-    "name": "runeterradra20",
+    "name": "artifactdra19",
     "private": true
 }
 
@@ -17,7 +17,7 @@ var args = process.argv;
 
 if(args[2]=="create") createRepo(repoDef)
 if(args[2]=="delete") deleteRepo(repoDef)
-if(args[2]=="repo") repoCount(repoDef)
+if(args[2]=="evaluar") evaluarRepo(repoDef)
 
 async function createRepo(repo){
     var resultado = await org.createRepo(repo, function(error,result,request){
@@ -36,7 +36,7 @@ async function deleteRepo(repo){
    })
 }
 
-async function repoCount(repo){
+async function evaluarRepo(repo){
 
     var issues = await gh.getIssues(process.env.ORG_NAME, repo.name)
 
@@ -63,5 +63,18 @@ async function repoCount(repo){
             })
         });
     })
-    console.log(count)
+    await modificarListadoNotas(repo, count)
+}
+
+async function modificarListadoNotas(repo, count){
+    var repository = await gh.getRepo(process.env.ORG_NAME, repo.name);
+
+    var documentToWrite = "# Notas acumuladas \n"+ "Nombre de Usuario | Notas\n"+"----------------- | -----\n";
+
+    await Object.entries(count).forEach(element=>{
+        documentToWrite+=element[0]+"|"+element[1]+"\n"
+    })
+
+
+    repository.writeFile("master", "NOTAS.md", documentToWrite, "Actualizadas Notas");
 }
