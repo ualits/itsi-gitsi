@@ -78,3 +78,7 @@ async function modificarListadoNotas(repo, count){
 
     repository.writeFile("master", "NOTAS.md", documentToWrite, "Actualizadas Notas");
 }
+
+async function generarIssues(repo, issues){
+    
+}
