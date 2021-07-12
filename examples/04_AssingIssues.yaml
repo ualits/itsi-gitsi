@@ -1,0 +1,22 @@
+apiVersion: 1
+op: assing # Establece la operación que manejará el programa (create, evaluate, delete y assing)
+org: ual-its # Indica la organización donde se ejecutará la operación
+metadata: # Datos relacionados con la operación que se va a realizar
+  repos: # Establece los repos que donde se van a asignar los nuevos issues
+    - test1
+    - test2
+    - test3
+  issues: # Establece los issues creados en el momento de la creación del repo
+    - 
+      name: "Prueba1 test1" # Nombre del issue
+      description: "Descripción del issue de la prueba1"
+      tags: 
+        - 5
+        - Ejercicio
+    - 
+      name: "Prueba2"
+      description: "Descripción del issue de la prueba 2"
+      tags: 
+        - 4
+      milestone:
+        - FirstMilestone
