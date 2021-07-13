@@ -8,9 +8,9 @@ metadata: # Datos relacionados con la operación que se va a realizar
     - test3
   labels: # Establece los labels que se utilizarán en los issues del repo
     -
-      name: "1"
-      description: "Issue de dificultad muy baja"
-      color: "ededed"
+      name: "1" # Nombre de la label
+      description: "Issue de dificultad muy baja" # Descripción de la label
+      color: "ededed" # Color en hexadecimal sin el carácter #
     - 
       name: "2"
       description: "Issue de dificultad baja"
