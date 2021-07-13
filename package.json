@@ -17,6 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^10.0.0",
-    "github-api": "^3.4.0"
+    "github-api": "^3.4.0",
+    "js-yaml": "^4.1.0"
   }
 }

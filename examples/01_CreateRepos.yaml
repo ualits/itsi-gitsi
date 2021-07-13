@@ -1,6 +1,6 @@
 apiVersion: 1
 op: create # Establece la operación que manejará el programa (create, evaluate, delete y assing)
-org: ual-its # Indica la organización donde se ejecutará la operación
+org: ualits # Indica la organización donde se ejecutará la operación
 metadata: # Datos relacionados con la operación que se va a realizar
   repos: # Establece los repos que se van a generar en la org
     - test1

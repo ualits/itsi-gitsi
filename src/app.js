@@ -1,4 +1,6 @@
 const GitHub = require('github-api');
+const yaml = require('js-yaml');
+const fs   = require('fs');
 
 require('dotenv').config()
 
@@ -6,39 +8,69 @@ var gh = new GitHub({
     token: process.env.PERSONAL_ACCESS_TOKEN
 });
 
-var org = gh.getOrganization(process.env.ORG_NAME);
-
-var repoDef = {
-    "name": "artifactdra19",
-    "private": true
-}
-
 var args = process.argv;
 
-if(args[2]=="create") createRepo(repoDef)
-if(args[2]=="delete") deleteRepo(repoDef)
-if(args[2]=="evaluar") evaluarRepo(repoDef)
+if(args[2]){
+// Get document, or throw exception on error
+    try {
+        console.log(args[2])
+        const doc = yaml.load(fs.readFileSync(args[2], 'utf8'));
+        console.log(doc);
+        if(doc.apiVersion==1){
+            switch(doc.op.toLowerCase()){
+                case 'delete':
+                    doc.metadata.repos.forEach(repo=>{
+                        deleteRepoV1(doc.org, repo);
+                    });
+                    break;
+                case 'create':
+                    doc.metadata.repos.forEach(repo=>{
+                        createRepoV1(doc.org, repo);
+                    });
+                    break;
+                default:
+                    throw new Error("Op no controlada")
+            }
+        }
+        else{
+            throw new Error("Versión no controlada");
+        }
+    } catch (e) {
+        console.log(e);
+    }
+}else{
+    process.exit(0);
+}
 
-async function createRepo(repo){
-    var resultado = await org.createRepo(repo, function(error,result,request){
+//var org = gh.getOrganization(process.env.ORG_NAME);
+
+/* var repoDef = {
+    "name": "artifactdra19",
+    "private": true
+} */
+
+async function createRepoV1(org,repo){
+    var organization = gh.getOrganization(org);
+    var resultado = await organization.createRepo({name:repo,private:true}, function(error,result,request){
         if(error) return error;
         return result;
     })
     console.log(resultado);
 }
 
-async function deleteRepo(repo){
-    
-   var repository = await gh.getRepo(process.env.ORG_NAME,repo.name);
-
-   repository.deleteRepo((error,result,request)=>{
-       console.log(result);
+async function deleteRepoV1(org,repo){
+   
+   var repository = await gh.getRepo(org,repo);
+   var resultado=await repository.deleteRepo(function(error,result,request){
+    if(error) return error;
+    return result;
    })
+   console.log(resultado)
 }
 
-async function evaluarRepo(repo){
+async function evaluarRepoV1(org,repo){
 
-    var issues = await gh.getIssues(process.env.ORG_NAME, repo.name)
+    var issues = await gh.getIssues(org, repo)
 
     var count = {};
     await issues.listIssues({state:"closed"},(error,result,request)=>{
@@ -66,7 +98,7 @@ async function evaluarRepo(repo){
     await modificarListadoNotas(repo, count)
 }
 
-async function modificarListadoNotas(repo, count){
+async function modificarListadoNotasV1(repo, count){
     var repository = await gh.getRepo(process.env.ORG_NAME, repo.name);
 
     var documentToWrite = "# Notas acumuladas \n"+ "Nombre de Usuario | Notas\n"+"----------------- | -----\n";
@@ -74,8 +106,6 @@ async function modificarListadoNotas(repo, count){
     await Object.entries(count).forEach(element=>{
         documentToWrite+=element[0]+"|"+element[1]+"\n"
     })
-
-
     repository.writeFile("master", "NOTAS.md", documentToWrite, "Actualizadas Notas");
 }
 
