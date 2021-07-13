@@ -1,6 +1,7 @@
 const GitHub = require('github-api');
 const yaml = require('js-yaml');
 const fs   = require('fs');
+const Issue = require('github-api/dist/components/Issue');
 
 require('dotenv').config()
 
@@ -24,8 +25,9 @@ if(args[2]){
                     });
                     break;
                 case 'create':
-                    doc.metadata.repos.forEach(repo=>{
-                        createRepoV1(doc.org, repo);
+                    doc.metadata.repos.forEach(async repo=>{
+                        await createRepoV1(doc.org, repo);
+                        await createLabelsV1(doc.org, repo, doc.metadata.labels)
                     });
                     break;
                 default:
@@ -109,6 +111,20 @@ async function modificarListadoNotasV1(repo, count){
     repository.writeFile("master", "NOTAS.md", documentToWrite, "Actualizadas Notas");
 }
 
+async function createLabelsV1(org, repo, labels){
+    
+    var issue = gh.getIssues(org,repo);
+    labels.forEach(async label=>{
+        await issue.createLabel(({name:label.name, description:label.description, color:label.color}),(error,result,request)=>{
+            if(error){
+                console.log(error)
+                process.exit(1);
+            }
+            console.log(result);
+        })
+    })
+    
+}
 async function generarIssues(repo, issues){
     
 }

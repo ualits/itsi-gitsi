@@ -6,13 +6,31 @@ metadata: # Datos relacionados con la operación que se va a realizar
     - test1
     - test2
     - test3
-  tags: # Establece los tags que se utilizarán en los issues del repo
-    - 1
-    - 2
-    - 3
-    - 4
-    - 5
-    - Ejercicio
+  labels: # Establece los labels que se utilizarán en los issues del repo
+    -
+      name: "1"
+      description: "Issue de dificultad muy baja"
+      color: "ededed"
+    - 
+      name: "2"
+      description: "Issue de dificultad baja"
+      color: "ededed"
+    - 
+      name: "3"
+      description: "Issue de dificultad media"
+      color: "ededed"
+    -
+      name: "4"
+      description: "Issue difícil"
+      color: "ededed"
+    -
+      name: "5"
+      description: "Issue muy difícil"
+      color: "ededed"
+    -
+      name: "Ejercicio"
+      description: "Issue que representa un ejercicio"
+      color: "C4896B"
   milestones: # Establece las milestones de el repo
     - FirstMilestone
     - SecondMilestone
@@ -20,13 +38,13 @@ metadata: # Datos relacionados con la operación que se va a realizar
     - 
       name: "Prueba1 test1" # Nombre del issue
       description: "Descripción del issue de la prueba1"
-      tags: 
+      labels: 
         - 5
         - Ejercicio
     - 
       name: "Prueba2"
       description: "Descripción del issue de la prueba 2"
-      tags: 
+      labels: 
         - 4
       milestone:
         - FirstMilestone
