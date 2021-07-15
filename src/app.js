@@ -1,12 +1,11 @@
-const GitHub = require('github-api');
 const yaml = require('js-yaml');
 const fs   = require('fs');
-const Issue = require('github-api/dist/components/Issue');
+const { Octokit } = require("@octokit/rest");
 
 require('dotenv').config()
 
-var gh = new GitHub({
-    token: process.env.PERSONAL_ACCESS_TOKEN
+const octokit = new Octokit({
+  auth: process.env.PERSONAL_ACCESS_TOKEN,
 });
 
 var args = process.argv;
@@ -27,7 +26,7 @@ if(args[2]){
                 case 'create':
                     doc.metadata.repos.forEach(async repo=>{
                         await createRepoV1(doc.org, repo);
-                        await createLabelsV1(doc.org, repo, doc.metadata.labels)
+                        await createLabelsV1(doc.org, repo, doc.metadata.labels);
                     });
                     break;
                 default:
@@ -52,22 +51,46 @@ if(args[2]){
 } */
 
 async function createRepoV1(org,repo){
-    var organization = gh.getOrganization(org);
-    var resultado = await organization.createRepo({name:repo,private:true}, function(error,result,request){
-        if(error) return error;
-        return result;
+    
+    var resultado = await octokit.request('POST /orgs/'+org+'/repos', {
+        org: org,
+        name: repo.name,
+        private: true
     })
+    if(repo.users){
+        repo.users.forEach(async user=>{
+            await octokit.request('PUT /repos/'+org+'/'+repo.name+'/collaborators/'+user, {
+                owner: org,
+                repo: repo.name,
+                username: user,
+                permission: 'admin'
+              })
+        })
+    }
     console.log(resultado);
 }
 
 async function deleteRepoV1(org,repo){
-   
-   var repository = await gh.getRepo(org,repo);
-   var resultado=await repository.deleteRepo(function(error,result,request){
-    if(error) return error;
-    return result;
+
+   var resultado = await octokit.request('DELETE /repos/'+org+'/'+repo, {
+    owner: org,
+    repo: repo
    })
    console.log(resultado)
+}
+
+async function createLabelsV1(org, repo, labels){
+
+    labels.forEach(async label=>{
+        var resultado = await octokit.request('POST /repos/'+org+'/'+repo.name+'/labels', {
+            owner: org,
+            repo: repo.name,
+            name: label.name,
+            description: label.description,
+            color: label.color
+        })
+        console.log(resultado)
+    })
 }
 
 async function evaluarRepoV1(org,repo){
@@ -111,20 +134,6 @@ async function modificarListadoNotasV1(repo, count){
     repository.writeFile("master", "NOTAS.md", documentToWrite, "Actualizadas Notas");
 }
 
-async function createLabelsV1(org, repo, labels){
-    
-    var issue = gh.getIssues(org,repo);
-    labels.forEach(async label=>{
-        await issue.createLabel(({name:label.name, description:label.description, color:label.color}),(error,result,request)=>{
-            if(error){
-                console.log(error)
-                process.exit(1);
-            }
-            console.log(result);
-        })
-    })
-    
-}
 async function generarIssues(repo, issues){
     
 }

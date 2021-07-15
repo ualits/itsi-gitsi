@@ -9,8 +9,8 @@ metadata: # Datos relacionados con la operación que se va a realizar
   issues: # Establece los issues creados en el momento de la creación del repo
     - 
       name: "Prueba1 test1" # Nombre del issue
-      description: "Descripción del issue de la prueba1"
-      labels: 
+      description: "Descripción del issue de la prueba1" # Descripción del issue
+      labels: # Labels asignadas al issue
         - 5
         - Ejercicio
     - 

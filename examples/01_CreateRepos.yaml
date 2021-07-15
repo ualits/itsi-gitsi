@@ -1,11 +1,16 @@
 apiVersion: 1
-op: create # Establece la operación que manejará el programa (create, evaluate, delete y assing)
+op: create # Establece la operación que manejará el programa (create, evaluate, delete, assing y bulkload)
 org: ualits # Indica la organización donde se ejecutará la operación
 metadata: # Datos relacionados con la operación que se va a realizar
-  repos: # Establece los repos que se van a generar en la org
-    - test1
-    - test2
-    - test3
+  repos: # Establece los repos que se van a generar en la org. En principio repos privados.
+    - 
+      name: test1
+      users:
+        - manelme # Usuarios a invitar en un repo máximo 50 a un mismo repo.
+    - 
+      name: test2
+    - 
+      name: test3
   labels: # Establece los labels que se utilizarán en los issues del repo
     -
       name: "1" # Nombre de la label

@@ -16,8 +16,8 @@
   "author": "Manel Mena",
   "license": "ISC",
   "dependencies": {
+    "@octokit/rest": "^18.6.7",
     "dotenv": "^10.0.0",
-    "github-api": "^3.4.0",
     "js-yaml": "^4.1.0"
   }
 }
