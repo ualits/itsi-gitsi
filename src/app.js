@@ -6,49 +6,45 @@ require('dotenv').config()
 
 const octokit = new Octokit({
   auth: process.env.PERSONAL_ACCESS_TOKEN,
+  userAgent: "ITSI-GITSI"
 });
 
 var args = process.argv;
 
-if(args[2]){
-// Get document, or throw exception on error
-    try {
-        console.log(args[2])
-        const doc = yaml.load(fs.readFileSync(args[2], 'utf8'));
-        console.log(doc);
-        if(doc.apiVersion==1){
-            switch(doc.op.toLowerCase()){
-                case 'delete':
-                    doc.metadata.repos.forEach(repo=>{
-                        deleteRepoV1(doc.org, repo);
-                    });
-                    break;
-                case 'create':
-                    doc.metadata.repos.forEach(async repo=>{
-                        await createRepoV1(doc.org, repo);
-                        await createLabelsV1(doc.org, repo, doc.metadata.labels);
-                    });
-                    break;
-                default:
-                    throw new Error("Op no controlada")
+async function main(){
+    if(args[2]){
+        // Get document, or throw exception on error
+            try {
+                const doc = await yaml.load(fs.readFileSync(args[2], 'utf8'));
+                if(doc.apiVersion==1){
+                    switch(doc.op.toLowerCase()){
+                        case 'delete':
+                            for(var repo of doc.metadata.repos){
+                                deleteRepoV1(doc.org, repo);
+                            }
+                            break;
+                        case 'create':
+                            for(var repo of doc.metadata.repos){
+                                await createRepoV1(doc.org, repo);
+                                if(doc.metadata.labels) await createLabelsV1(doc.org, repo, doc.metadata.labels);
+                                if(doc.metadata.milestones) await createMilestonesV1(doc.org, repo, doc.metadata.milestones);
+                                if(doc.metadata.issues) await createIssuesV1(doc.org,repo,doc.metadata.issues);
+                            }
+                            break;
+                        default:
+                            throw new Error("Op no controlada")
+                    }
+                }
+                else{
+                    throw new Error("Versión no controlada");
+                }
+            } catch (e) {
+                console.log(e);
             }
+        }else{
+            process.exit(0);
         }
-        else{
-            throw new Error("Versión no controlada");
-        }
-    } catch (e) {
-        console.log(e);
-    }
-}else{
-    process.exit(0);
 }
-
-//var org = gh.getOrganization(process.env.ORG_NAME);
-
-/* var repoDef = {
-    "name": "artifactdra19",
-    "private": true
-} */
 
 async function createRepoV1(org,repo){
     
@@ -58,14 +54,14 @@ async function createRepoV1(org,repo){
         private: true
     })
     if(repo.users){
-        repo.users.forEach(async user=>{
+        for(user of repo.users){
             await octokit.request('PUT /repos/'+org+'/'+repo.name+'/collaborators/'+user, {
                 owner: org,
                 repo: repo.name,
                 username: user,
                 permission: 'admin'
               })
-        })
+        }
     }
     console.log(resultado);
 }
@@ -81,16 +77,37 @@ async function deleteRepoV1(org,repo){
 
 async function createLabelsV1(org, repo, labels){
 
-    labels.forEach(async label=>{
+    for(label of labels){
         var resultado = await octokit.request('POST /repos/'+org+'/'+repo.name+'/labels', {
-            owner: org,
-            repo: repo.name,
             name: label.name,
             description: label.description,
             color: label.color
         })
         console.log(resultado)
-    })
+    }
+}
+
+async function createMilestonesV1(org, repo, milestones){
+
+    for(milestone of milestones){
+        var resultado = await octokit.request('POST /repos/'+org+'/'+repo.name+'/milestones', {
+            title: milestone.title,
+            description: milestone.description,
+        })
+        console.log(resultado)
+    }
+}
+
+async function createIssuesV1(org, repo, issues){
+    
+    for(issue of issues){
+        var resultado = await octokit.request('POST /repos/'+org+'/'+repo.name+'/issues', {
+            title: issue.title,
+            body: issue.description,
+            labels: issue.labels
+        })
+        console.log(resultado)
+    }   
 }
 
 async function evaluarRepoV1(org,repo){
@@ -134,6 +151,4 @@ async function modificarListadoNotasV1(repo, count){
     repository.writeFile("master", "NOTAS.md", documentToWrite, "Actualizadas Notas");
 }
 
-async function generarIssues(repo, issues){
-    
-}
+main()

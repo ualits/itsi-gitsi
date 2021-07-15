@@ -4,13 +4,13 @@ org: ualits # Indica la organización donde se ejecutará la operación
 metadata: # Datos relacionados con la operación que se va a realizar
   repos: # Establece los repos que se van a generar en la org. En principio repos privados.
     - 
-      name: test1
+      name: "test1"
       users:
-        - manelme # Usuarios a invitar en un repo máximo 50 a un mismo repo.
+        - "manelme" # Usuarios a invitar en un repo máximo 50 a un mismo repo.
     - 
-      name: test2
+      name: "test2"
     - 
-      name: test3
+      name: "test3"
   labels: # Establece los labels que se utilizarán en los issues del repo
     -
       name: "1" # Nombre de la label
@@ -37,19 +37,21 @@ metadata: # Datos relacionados con la operación que se va a realizar
       description: "Issue que representa un ejercicio"
       color: "C4896B"
   milestones: # Establece las milestones de el repo
-    - FirstMilestone
-    - SecondMilestone
+    - 
+      title: "FirstMilestone"
+      description: "Primera milestone"
+    - 
+      title: "SecondMilestone"
+      description: "Segunda Milestone"
   issues: # Establece los issues creados en el momento de la creación del repo
     - 
-      name: "Prueba1 test1" # Nombre del issue
+      title: "Prueba1 test1" # Nombre del issue
       description: "Descripción del issue de la prueba1"
       labels: 
-        - 5
-        - Ejercicio
+        - "5"
+        - "Ejercicio"
     - 
-      name: "Prueba2"
-      description: "Descripción del issue de la prueba 2"
+      title: "Prueba2"
+      description: "Descripción Issue2"
       labels: 
-        - 4
-      milestone:
-        - FirstMilestone
+        - "4"

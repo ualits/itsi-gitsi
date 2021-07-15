@@ -11,12 +11,10 @@ metadata: # Datos relacionados con la operación que se va a realizar
       name: "Prueba1 test1" # Nombre del issue
       description: "Descripción del issue de la prueba1" # Descripción del issue
       labels: # Labels asignadas al issue
-        - 5
-        - Ejercicio
+        - "5"
+        - "Ejercicio"
     - 
       name: "Prueba2"
       description: "Descripción del issue de la prueba 2"
       labels: 
-        - 4
-      milestone:
-        - FirstMilestone
+        - "4"
