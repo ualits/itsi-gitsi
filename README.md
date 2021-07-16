@@ -1,4 +1,4 @@
-# ITSI-GITSI (README OBSOLETO!!, no hacer caso)
+# ITSI-GITSI
 ITSI-GITSI es una herramienta para la generación y gestión automática de repos de GIT Hub, en principio tenemos como objetivos de la herramienta que sea capaz de hacer las siguientes cosas.
 
 1. Generación automática de repos con una plantilla generada a partir de una propuesta de metamodelo.
