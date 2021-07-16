@@ -1,8 +1,32 @@
 apiVersion: 1
-op: delete  # Establece la operación que manejará el programa (create, evaluate, delete y assing)
+op: delete  # Establece la operación que manejará el programa (create, evaluate, delete, assign y bulkload)
 org: ualits  # Indica la organización donde se ejecutará la operación
 metadata: # Datos relacionados con la operación que se va a realizar
   repos:
     - test1
     - test2
     - test3
+    # - pat533
+    # - cah758
+    # - saf166
+    # - aaf842
+    # - pat5331
+    # - pat5332
+    # - pat5333
+    # - pat5334
+    # - pat5335
+    # - pat5336
+    # - pat5337
+    # - pat5338
+    # - pat5339
+    # - pat53310
+    # - pat53311
+    # - pat53312
+    # - pat53313
+    # - pat53314
+    # - pat53315
+    # - pat53316
+    # - pat53317
+    # - pat53318
+    # - pat53319
+    # - pat53320

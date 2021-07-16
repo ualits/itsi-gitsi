@@ -1,20 +1,21 @@
 apiVersion: 1
-op: assing # Establece la operación que manejará el programa (create, evaluate, delete y assing)
+op: assign # Establece la operación que manejará el programa (create, evaluate, delete, assign y bulkload)
 org: ualits # Indica la organización donde se ejecutará la operación
 metadata: # Datos relacionados con la operación que se va a realizar
   repos: # Establece los repos que donde se van a asignar los nuevos issues
-    - test1
-    - test2
-    - test3
+    - 
+      name: "test1"
+    -
+      name: "test3"
   issues: # Establece los issues creados en el momento de la creación del repo
     - 
-      name: "Prueba1 test1" # Nombre del issue
+      title: "prueba3" # Nombre del issue
       description: "Descripción del issue de la prueba1" # Descripción del issue
       labels: # Labels asignadas al issue
         - "5"
         - "Ejercicio"
     - 
-      name: "Prueba2"
+      title: "prueba4"
       description: "Descripción del issue de la prueba 2"
       labels: 
         - "4"

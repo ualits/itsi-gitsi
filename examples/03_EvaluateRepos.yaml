@@ -1,9 +1,7 @@
 apiVersion: 1
-op: evaluate # Establece la operación que manejará el programa (create, evaluate, delete y assing)
+op: evaluate # Establece la operación que manejará el programa (create, evaluate, delete, assign y bulkload)
 org: ualits # Indica la organización donde se ejecutará la operación
 metadata: # Datos relacionados con la operación que se va a realizar
   repos:
-    - test1
     - test2
-    - test3
   evalFile: NOTAS.md

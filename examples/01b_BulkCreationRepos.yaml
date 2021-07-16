@@ -1,0 +1,7 @@
+apiVersion: 1
+op: bulkload # Establece la operación que manejará el programa (create, evaluate, delete, assign y bulkload)
+org: ualits # Indica la organización donde se ejecutará la operación
+metadata: # Datos relacionados con la operación que se va a realizar
+  repos: 
+    file: "./examples/01b_file.csv" # Establece el archivo de los repos que se van a generar en la org.
+    private: true

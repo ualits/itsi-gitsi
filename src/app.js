@@ -1,6 +1,8 @@
 const yaml = require('js-yaml');
 const fs   = require('fs');
+const csv=require("csvtojson");
 const { Octokit } = require("@octokit/rest");
+var base64 = require('base-64');
 
 require('dotenv').config()
 
@@ -31,6 +33,19 @@ async function main(){
                                 if(doc.metadata.issues) await createIssuesV1(doc.org,repo,doc.metadata.issues);
                             }
                             break;
+                        case 'evaluate':
+                            for(var repo of doc.metadata.repos){
+                                await evaluateRepoV1(doc.org, repo, doc.metadata.evalFile);
+                            }
+                            break;
+                        case 'assign':
+                            for(var repo of doc.metadata.repos){
+                                if(doc.metadata.issues) await createIssuesV1(doc.org,repo,doc.metadata.issues);
+                            }
+                            break;
+                        case 'bulkload':
+                            await createBulkRepos(doc, doc.metadata.repos)
+                            break;
                         default:
                             throw new Error("Op no controlada")
                     }
@@ -51,7 +66,7 @@ async function createRepoV1(org,repo){
     var resultado = await octokit.request('POST /orgs/'+org+'/repos', {
         org: org,
         name: repo.name,
-        private: true
+        private: repo.private
     })
     if(repo.users){
         for(user of repo.users){
@@ -110,15 +125,17 @@ async function createIssuesV1(org, repo, issues){
     }   
 }
 
-async function evaluarRepoV1(org,repo){
-
-    var issues = await gh.getIssues(org, repo)
+async function evaluateRepoV1(org, repo, file){
 
     var count = {};
-    await issues.listIssues({state:"closed"},(error,result,request)=>{
-        result.forEach(async element => {
+
+    var issues = await octokit.request('GET /repos/'+org+'/'+repo+'/issues', {
+        state: "closed"
+    })
+    console.log(issues);
+    for(issue of issues.data){
             var pointFactor=0;
-            await element.labels.forEach(label=>{
+            for(label of issue.labels){
                 if(label.name=="1") pointFactor+=1;
                 if(label.name=="2") pointFactor+=2;
                 if(label.name=="3") pointFactor+=3;
@@ -129,26 +146,52 @@ async function evaluarRepoV1(org,repo){
                 if(label.name=="8") pointFactor+=8;
                 if(label.name=="9") pointFactor+=9;
                 if(label.name=="10") pointFactor+=10;
-            })
+            }
             if(pointFactor==0) pointFactor=1;
-            await element.assignees.forEach(assignee=>{
+            for(assignee of issue.assignees){
                 if(!count[assignee["login"]]) count[assignee["login"]]=pointFactor
                 else count[assignee["login"]]+=pointFactor
-            })
-        });
-    })
-    await modificarListadoNotas(repo, count)
+            }
+    }
+    await modifyEvaluationListV1(org, repo, count, file)
 }
 
-async function modificarListadoNotasV1(repo, count){
-    var repository = await gh.getRepo(process.env.ORG_NAME, repo.name);
-
+async function modifyEvaluationListV1(org, repo, count, file){
+    
     var documentToWrite = "# Notas acumuladas \n"+ "Nombre de Usuario | Notas\n"+"----------------- | -----\n";
 
     await Object.entries(count).forEach(element=>{
         documentToWrite+=element[0]+"|"+element[1]+"\n"
     })
-    repository.writeFile("master", "NOTAS.md", documentToWrite, "Actualizadas Notas");
+    await octokit.request('PUT /repos/'+org+'/'+repo+'/contents/{path}', {
+        path: file,
+        message: 'Grades updated',
+        content: base64.encode(documentToWrite)
+    })
+}
+
+async function createBulkRepos(doc, repos){
+    var data = await csv().fromFile(repos.file);
+    for(element of data){
+        var resultado = await octokit.request('POST /orgs/'+doc.org+'/repos', {
+            name: element['Nombre de usuario'],
+            private: repos.private
+        })
+        if(element.GitHubUser!=""){
+            var users=element.GitHubUser.split(";");
+            for(user of users){
+                await octokit.request('PUT /repos/'+doc.org+'/'+element['Nombre de usuario']+'/collaborators/'+user, {
+                        username: user,
+                        permission: 'admin'
+                })
+            }   
+        }else{
+            //TODO Cuando GithubCampus vivo 😁
+        }
+        //if(doc.metadata.labels) await createLabelsV1(doc.org, {name:element['Nombre de usuario']}, doc.metadata.labels);
+        //if(doc.metadata.milestones) await createMilestonesV1(doc.org, {name:element['Nombre de usuario']}, doc.metadata.milestones);
+        //if(doc.metadata.issues) await createIssuesV1(doc.org,{name:element['Nombre de usuario']},doc.metadata.issues);
+    }
 }
 
 main()
