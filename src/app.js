@@ -6,6 +6,7 @@ var base64 = require('base-64');
 
 require('dotenv').config()
 
+// Add baseUrl if using GitHub Enterprise
 const octokit = new Octokit({
   auth: process.env.PERSONAL_ACCESS_TOKEN,
   userAgent: "ITSI-GITSI"
