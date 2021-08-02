@@ -32,10 +32,3 @@ npm start ./examples/01_CreateRepos.yaml
 ### Collaborators
 * **Manel Mena** -  [https://github.com/manelme](https://github.com/manelme).
 * **Javier Criado** -  [https://github.com/javicriado](https://github.com/javicriado).
-
-### TODO
-- Add issues a todos los repos de organización.
-- Asignar nota parcial dependiendo de comentario (en issue).
-- Asignar nota a alumno individualmente por comentario (en issue).
-- Creación de repos a partir de template con fork.
-- Generar UI.
