@@ -1,34 +1,33 @@
 # ITSI-GITSI
-ITSI-GITSI es una herramienta para la generación y gestión automática de repos de GIT Hub, en principio tenemos como objetivos de la herramienta que sea capaz de hacer las siguientes cosas.
+ITSI-GITSI is a tool for generating and automatically managing GitHub repositories. The tool capabilities are the following:
 
-1. Generación automática de repos con una plantilla generada a partir de una propuesta de metamodelo.
-  * Esta plantilla deberá ser capaz de definir etiquetas para issues, crear milestones en el proyecto e intentar realizar invitaciones automáticas de usuarios a los proyectos generados.
-2. Calculador de notas de usuarios de los repos, teniendo en cuenta que issues han resuelto, bien simplemente medianta la contabilizzación unitaria de esos issues (de uno en uno) o utilizando posibles tags de puntuación del issue.
-3. Modificar automáticamente un Markdown en el repo para de manera automática plasmar las notas en el mismo.
+1. Automatic generation of students' and teachers' repositories in a specific organization.
+2. Bulk generation of repositories using a .csv file.
+3. Generate issues and milestones related to course assignments, either when creating a repository or a posteriori.
+4. Calculator of scores for the users of the repositories, taking into account the issues resolved, either simply counting one by one the issues or using possible score tags of the particular issue.
+5. Automatic modification of a markdown file to capture the scores.
+6. Fast deletion of multiple repositories.
 
-## Posible Metamodelo de plantilla de repo
-//TODO
+# Consideration of use of the tool.
+In the examples folder, you have a series of examples of the different operations that can be performed with the tool.
 
-# Consideraciónes de uso de la herramienta.
-En la carpeta examples teneis una serie de ejemplos de las distintas operaciones que podreís realizar con la herramienta.
+## Requirements and .env
+The first thing you should have installed on your computer is the latest stable version of [Node.js](https://nodejs.org/en/). Once the installation of 'Node.js' has been verified, you must modify the '.env.test' file with your Github data and remove the '.test' extension from it. In that file you will need the following parameters:
 
-## Requisitos y .env
-Lo primero que debeis tener instalado en el ordenador es la última versión estable de [Node.js](https://nodejs.org/en/) en vuestro ordenador. Una vez comprobada la instalación de `Node.js` debeis modificar el archivo `.env.test` con vuestros datos de Github y eliminar la extensión `.test` del mismo. En principio necesitareis los siguientes paramentros.
+* PERSONAL_ACCESS_TOKEN. A token that you can create in the interface of [github](https://github.com/settings/tokens), it is important that for the tool to work correctly you must be 'owner' of the organization in which you are going to create the repositories. When generating the token, generate it with all possible permissions to avoid possible errors and do not forget to save it since you will not be able to consult it again, and a loss of this would mean having to do the token generation again.
 
-* PERSONAL_ACCESS_TOKEN. Un token que podeis crear en la interfaz de [github](https://github.com/settings/tokens), es importante que para que la herramienta funcione correctamente debeis ser `owners` de la organización en la que vais a crear los repos. Al generar el token, generarlo con todos los permisos posibles para evitar posibles errores y no os olvideis de guardar el mismo dado que no podreís volver a consultarlo, y una pérdida de este supondría tener que volver a hacer la generación de token.
-
-## Instalación de dependencias
-Para el correcto funcionamiento de la herramienta lo primero que hay que hacer es instalar las dependencias del proyecto. Para ello debeis ejecutar en la carpeta raiz del proyecto la orden: 
+## Installing dependencies
+For the correct functioning of the tool, the first thing to do is install the project's dependencies. To do this, you must execute in the root folder of the project the order: 
 ```
 npm install .
 ```
 
-## Ejecutar la herramienta
-Para ejecutarla tienes que lanzar el programa con el archivo .yaml de configuración que deseas lanzar, por ejemplo:
+## Run the tool
+To run it, you have to launch the program with the configuration .yaml file you want to launch, for example:
 ```
 npm start ./examples/01_CreateRepos.yaml
 ```
 
 ### Collaborators
-* **Manel Mena** -  [https://github.com/manelme](https://github.com/manelme).
-* **Javier Criado** -  [https://github.com/javicriado](https://github.com/javicriado).
+* **Manel Mena** - [https://github.com/manelme](https://github.com/manelme).
+* **Javier Criado** - [https://github.com/javicriado](https://github.com/javicriado).
